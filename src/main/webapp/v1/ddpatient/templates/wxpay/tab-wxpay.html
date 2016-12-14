@@ -1,0 +1,45 @@
+<ion-view view-title="叮咚门诊">
+    <ion-header-bar class="bar bar-calm" align-title="center">
+        <a href="#/tab/main" class="button button-clear ion ion-chevron-left">返回</a>
+        <h1 class="title">我的财富</h1>
+    </ion-header-bar>
+
+    <ion-content class="row-no-padding" overflow-scroll="false">
+
+        <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
+
+        <div class="item item-avatar" style="background:#ffc900;">
+            <img ng-src="http://www.yushansoft.com/dingdong/images/sys/accountBalance.png">
+            <h2>账户余额（元）</h2>
+            <h1>{{balance}}</h1>
+            <a id='WxpayButtonStyle1' class='button button-balanced' href="#/tab/enchashment"> 取现</a>
+            <a id='WxpayButtonStyle' class='button button-balanced'
+               href="http://www.yushansoft.com/dingdong/sys/wxpay/tab-wxpay.html"> 充值</a>
+
+        </div>
+
+
+        <div ng-show="!showOrNot">
+            <div class="item item-divider">
+                财富明细
+            </div>
+            <ion-item ng-repeat="userTransfer in vm.transferList"
+                      class="item-remove-animate item-avatar item-icon-right"
+                      type="item-text-wrap">
+                <img ng-src="{{userTransfer.headImgUrl}}"
+                     err-src="http://www.yushansoft.com/dingdong/images/sys/money_bag.png">
+                <h2>{{userTransfer.amount}}</h2>
+                <p style="{{userTransfer.reasonDesc| fontColorFilter}}">{{userTransfer.fromUserName}}-{{userTransfer.transactionTime |
+                    dateFormat1}}-{{userTransfer.reasonDesc}}</p>
+            </ion-item>
+        </div>
+
+        <div ng-show="showOrNot" class="center">
+            <div class="title">
+                还没有转账记录!
+            </div>
+        </div>
+
+    </ion-content>
+
+</ion-view>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.DoctorTagMapper">
+
+	<resultMap type="doctorTag" id="doctorTagMap">
+		<id property="id" column="id" />
+		<result property="doctorId" column="doctor_id" />
+		<result property="doctorName" column="doctor_name" />
+		<result property="tagId" column="tag_id" />
+		<result property="tagName" column="tag_name" />
+		<result property="times" column="times" />
+	</resultMap>
+	
+	<select id="findByDoctorIdAndTagId" resultType="doctorTag" resultMap="doctorTagMap">
+		select * from doctor_tag where doctor_id = #{doctorId} and tag_id = #{tagId};
+	</select>
+
+	<select id="findByDoctorId" resultMap="doctorTagMap">
+		select * from doctor_tag where doctor_id = #{doctorId};
+	</select>
+
+	<select id="findByDoctorIdTopN" resultMap="doctorTagMap">
+		select * from doctor_tag where doctor_id = #{doctorId} order by times desc limit #{topNum};
+	</select>
+
+	<insert id="insertDoctorTag">
+		insert into doctor_tag(doctor_id, doctor_name, tag_id, tag_name, times)
+		values(#{doctorTag.doctorId}, #{doctorTag.doctorName}, #{doctorTag.tagId}, #{doctorTag.tagName}, #{doctorTag.times})
+	</insert>
+
+	<update id="updateDoctorTag">
+		update doctor_tag set times = times + 1 where doctor_id = #{doctorId} and tag_id = #{tagId}
+	</update>
+	
+</mapper>

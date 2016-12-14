@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.HospitalMapper">
+    <resultMap type="hospital" id="hospitalMap">
+        <id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="fullName" column="fullName" />
+		<result property="level" column="level" />
+		<result property="status" column="status" />
+		<result property="introduction" column="introduction" />
+		<result property="country" column="country" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="street" column="street" />
+		<result property="serviceAttitude" column="service_attitude" />
+		<result property="createTime" column="create_time" />
+		<result property="tele" column="tele" />
+		
+		<result property="opTele" column="op_tele" />
+		<result property="iconUrl" column="icon_url" />
+    </resultMap>
+	
+	<insert id="addHospital">
+        insert into hospital (name, fullName,level,status,introduction,country,province,city,street,service_attitude,create_time,tele,op_tele,icon_url) 
+		values(#{hospital.name}, #{hospital.fullName},#{hospital.level},#{hospital.status},#{hospital.introduction}, #{hospital.country},
+		 #{hospital.province}, #{hospital.city},#{hospital.street},#{hospital.serviceAttitude},#{hospital.createTime},#{hospital.tele},#{hospital.opTele},#{hospital.iconUrl})
+			<selectKey resultType="java.lang.Long" keyProperty="hospital.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+	<insert id="addHospitals"  parameterType="java.util.List">
+        insert into hospital (name, fullName,level,status,introduction,country,province,city,street,service_attitude,create_time,tele,icon_url) 
+	    <foreach collection="hospitals" item="hospital" index="index" separator="," >
+		values(#{hospital.name}, #{hospital.fullName},#{hospital.level},#{hospital.status},#{hospital.introduction}, #{hospital.country},
+		 #{hospital.province}, #{hospital.city},#{hospital.street},#{hospital.serviceAttitude},#{hospital.createTime},#{hospital.tele},#{hospital.iconUrl})
+	    </foreach>
+	<!--	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="item.id">  
+            select LAST_INSERT_ID();  
+       </selectKey>   -->
+	 </insert>
+    
+    <select id="findAllHospitals" resultMap="hospitalMap">
+        select * from hospital where status != 2
+        <if test="filterText != null"> 
+           and     (name like concat('%',#{filterText},'%'))
+        </if> 
+	     order by name
+    </select>
+    
+    <select id="findById" resultMap="hospitalMap">
+        select * from hospital where id=#{id}
+    </select>
+    
+    
+   <select id="findByStatus" resultMap="hospitalMap">
+        select * from hospital where status=#{status} order by name
+    </select>
+	
+     <select id="findByName" resultMap="hospitalMap">
+        select * from hospital where name=#{name}
+    </select>
+	
+	<select id="findByOpTele" resultMap="hospitalMap">
+        select * from hospital where op_tele=#{opTele}
+    </select>
+    
+    <delete id="deleteById">
+    	update hospital set status = 2 where id=#{id}
+    </delete>
+
+	<resultMap type="hospital" id="hospitalDepts" extends="hospitalMap">
+		<collection property="hospitalDepts" javaType="list" ofType="hospitalDept">
+			<id property="hospitalId" column="hospital_id" />
+			<result property="deptId" column="dept_id" />
+			<result property="deptName" column="dept_name" />
+		</collection>
+	</resultMap>
+	<select id="getAllHospitalDepts" resultMap="hospitalDepts">
+		SELECT
+		hospital.id,
+		hospital.name,
+		hospital_dept.dept_id,
+		hospital_dept.dept_name
+		FROM
+		hospital
+		JOIN hospital_dept ON hospital.id = hospital_dept.hospital_id
+		ORDER BY hospital.name, hospital_dept.dept_name
+	</select>
+
+	 <!-- 修改记录，只修改只不为空的字段 -->  
+	<update id="updateBySelective" parameterType="hospital" >  
+	    update hospital set   
+	    <trim  suffixOverrides="," >
+	    <if test="hospital.name != null  ">  
+	        name=#{hospital.name},  
+	    </if>  
+	    <if test="hospital.fullName != null  ">  
+	        fullName=#{hospital.fullName},  
+	    </if>   
+	    <if test="hospital.level != null  ">  
+	        level=#{hospital.level},  
+	    </if>  
+	    <if test="hospital.introduction != null  ">  
+	        introduction=#{hospital.introduction},  
+	    </if>
+		<if test="hospital.country != null  ">  
+	        country=#{hospital.country},  
+	    </if>  
+		<if test="hospital.province != null  ">  
+	        province=#{hospital.province},  
+	    </if>
+		<if test="hospital.city != null  ">  
+	        city=#{hospital.city},  
+	    </if>
+		<if test="hospital.street != null  ">  
+	        street=#{hospital.street},  
+	    </if>
+		<if test="hospital.serviceAttitude != null  ">  
+	        service_attitude=#{hospital.serviceAttitude},  
+	    </if>  
+		<if test="hospital.tele != null  ">  
+	        tele=#{hospital.tele},  
+	    </if>
+		<if test="hospital.opTele != null  ">  
+	        op_tele=#{hospital.opTele},  
+	    </if>
+		<if test="hospital.iconUrl != null  ">  
+	        icon_url=#{hospital.iconUrl},  
+	    </if>		     
+	    </trim> where id=#{hospital.id}  
+	</update> 
+
+</mapper>

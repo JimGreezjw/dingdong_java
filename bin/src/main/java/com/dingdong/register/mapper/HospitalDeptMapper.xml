@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.HospitalDeptMapper">
+
+    <resultMap type="hospitalDept" id="hospitalDeptMap">
+        <id property="id" column="id" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="hospitalName" column="hospital_name" />
+		<result property="deptId" column="dept_id" />
+		<result property="deptName" column="dept_name" />
+		<result property="managerId" column="manager_id" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+		<result property="status" column="status" />
+    </resultMap>
+    
+    
+    <select id="findByHospitalId"  resultMap="hospitalDeptMap">
+        select hd.* from  hospital_dept hd  
+         where hd.hospital_id=#{hospitalId} and hd.status = 1 order by hd.dept_name
+    </select>    
+	
+    <insert id="addHospitalDept">
+        insert into hospital_dept (hospital_id,hospital_name,dept_id,dept_name,manager_id,
+        creator_id,create_time,status) 
+		values(#{hospitalDept.hospitalId},#{hospitalDept.hospitalName},#{hospitalDept.deptId},#{hospitalDept.deptName}
+		, #{hospitalDept.managerId},#{hospitalDept.creatorId}, #{hospitalDept.createTime}, #{hospitalDept.status})
+			<selectKey resultType="java.lang.Long" keyProperty="hospitalDept.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+    <insert id="addHospitalDepts"  parameterType="java.util.List">
+        insert into hospital_dept (hospital_id,hospital_name,dept_id,dept_name,manager_id,
+        creator_id,create_time,status) values
+	    <foreach collection="hospitalDepts" item="hospitalDept" index="index" separator="," >
+		(#{hospitalDept.hospitalId},#{hospitalDept.hospitalName},#{hospitalDept.deptId},#{hospitalDept.deptName},
+		#{hospitalDept.managerId},#{hospitalDept.creatorId}, #{hospitalDept.createTime}, #{hospitalDept.status})
+	    </foreach>
+	<!--	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="item.id">  
+            select LAST_INSERT_ID();  
+       </selectKey>   -->
+	 </insert>
+ 	
+	
+    <delete id="deleteById">
+        update hospital_dept set status=2 where id=#{id}
+    </delete>
+	
+</mapper>

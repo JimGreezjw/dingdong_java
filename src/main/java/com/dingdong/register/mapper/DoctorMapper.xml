@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.DoctorMapper">
+
+    <resultMap type="doctor" id="doctorMap">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+		<result property="gender" column="gender" />
+		<result property="hospitalName" column="hospital_name" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="level" column="level" />
+		<result property="status" column="status" />
+		<result property="specialty" column="specialty" />
+		<result property="introduction" column="introduction" />
+		<result property="treatmentEffect" column="treatment_effect" />
+		<result property="serviceAttitude" column="service_attitude" />
+		<result property="headImgUrl" column="head_img_url" />
+		<result property="qrImgUrl" column="qr_img_url" />
+		<result property="createTime" column="create_time" />
+		<result property="userId" column="user_id" />
+		<result property="fansCount" column="fans_count" />		
+		<result property="qualificationId" column="qualification_id"/>
+		<result property="officeTele" column="officeTele"/>
+		<result property="mobilePhone" column="mobilePhone"/>
+		<result property="deptId" column="dept_id"/>
+		<result property="deptName" column="dept_name"/>
+		<result property="teacherLevel" column="teacher_level"/>
+		<result property="grade" column="grade"/>		
+    </resultMap>
+    
+
+    <select id="findUnsignedDoctors"  resultMap="doctorMap">
+        select * from doctor  where status=0
+         <if test="name != null"> 
+           and  name = #{name}
+        </if>
+        order by name
+    </select>
+    
+    <select id="findByName"  resultMap="doctorMap">
+        select * from doctor where name = #{name}
+    </select>
+    
+    <select id="findByNameHospitalDept"  resultMap="doctorMap">
+        select * from doctor where name = #{name} and hospital_name=#{hospitalName}  and dept_name=#{deptName}
+    </select>
+    
+    <select id="getNewJoinDoctors" resultMap="doctorMap">
+    	select * from doctor where status in(0,1)  order by create_time desc limit #{requireNum}
+    </select>
+	
+	<select id="findUnsignedDoctorsApply"  resultMap="doctorMap">
+        select * from doctor  where status=0 and user_id != 0
+         <if test="name != null"> 
+           and  name like concat('%',#{name},'%')
+        </if>
+        order by name
+    </select>
+    
+    <select id="findAllDoctors"  resultMap="doctorMap">
+        select * from doctor where status != 2 
+         <if test="filterText != null"> 
+           and  ((name like concat('%',#{filterText},'%')) or (hospital_name like concat('%',#{filterText},'%')) or (dept_name like concat('%',#{filterText},'%'))  or (specialty like concat('%',#{filterText},'%')))
+        </if>
+         order by name
+    </select>
+    
+    <select id="findByStatus"  resultMap="doctorMap">
+        select * from doctor where status =#{status}  order by name
+    </select>
+ 
+     <select id="findByUserId"  resultMap="doctorMap">
+        select * from doctor  where user_id=#{userId};
+    </select>   
+    
+    
+    <select id="findById" resultMap="doctorMap">
+        select * from doctor where id=#{id}
+    </select>
+    
+    <select id="findByDeptOutline" resultMap="doctorMap">
+        select doctor.* from doctor inner join dept on dept.id = doctor.dept_id where dept.dept_outline like concat(#{deptOutline}, '%')
+    </select>
+    
+    <select id="findByMobileNo" resultMap="doctorMap">
+        select * from doctor where mobilePhone = #{mobileNo}  and  status in(0,1)
+    </select>
+
+    
+    <select id="findByIds" resultMap="doctorMap">
+        select * from doctor where id in
+          <foreach item="item" index="index" collection="ids" 
+                         open="(" separator="," close=")">
+                        #{item}
+           </foreach>
+    </select>
+    	
+	
+    <insert id="addDoctor">
+        insert into doctor (name, gender,hospital_id,hospital_name,level,status,specialty,introduction,treatment_effect,service_attitude,head_img_url,create_time,user_id,
+        qualification_id,officeTele,mobilePhone,dept_id,dept_name,teacher_level,grade) 
+		values(#{doctor.name}, #{doctor.gender},#{doctor.hospitalId},#{doctor.hospitalName},#{doctor.level},#{doctor.status}, #{doctor.specialty}, #{doctor.introduction}, 
+		#{doctor.treatmentEffect},#{doctor.serviceAttitude}, #{doctor.headImgUrl},#{doctor.createTime},#{doctor.userId},#{doctor.qualificationId},
+		#{doctor.officeTele},#{doctor.mobilePhone},#{doctor.deptId},#{doctor.deptName},#{doctor.teacherLevel},#{doctor.grade})
+			<selectKey resultType="java.lang.Long" keyProperty="doctor.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+    <insert id="addDoctors"  parameterType="java.util.List">
+        insert into doctor (name, gender,hospital_id,hospital_name,level,status,specialty,introduction,treatment_effect,service_attitude,head_img_url,create_time,user_id,
+        qualification_id,officeTele,mobilePhone,dept_id,dept_name,teacher_level,grade) 
+
+	    <foreach collection="doctors" item="doctor" index="index" separator="," >
+		values(#{doctor.name}, #{doctor.gender},#{doctor.hospitalId},#{doctor.hospitalName},#{doctor.level},#{doctor.status}, #{doctor.specialty},#{doctor.introduction},#{doctor.treatmentEffect},
+		#{doctor.serviceAttitude}, #{doctor.headImgUrl},#{doctor.createTime},#{doctor.userId}
+		,#{doctor.qualificationId},#{doctor.officeTele},#{doctor.mobilePhone},#{doctor.deptId},#{doctor.deptName},#{doctor.teacherLevel},#{doctor.grade})
+	    </foreach>
+	<!--	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="item.id">  
+            select LAST_INSERT_ID();  
+       </selectKey>   -->
+	 </insert>
+    <update id="updateDoctor">
+        update doctor set name=#{doctor.name}, gender=#{doctor.gender},hospital_id=#{doctor.hospitalId}  ,hospital_name=#{doctor.hospitalName} ,level=#{doctor.level}, status=#{doctor.status},
+		 specialty=#{doctor.specialty}, introduction=#{doctor.introduction}
+		, treatment_effect=#{doctor.treatmentEffect}, service_attitude=#{doctor.serviceAttitude}, 
+		head_img_url=#{doctor.headImgUrl},qr_img_url=#{doctor.qrImgUrl},dept_id=#{doctor.deptId}  ,dept_name=#{doctor.deptName} , user_id=#{doctor.userId},qualification_id=#{doctor.qualificationId},grade=#{doctor.grade} where id=#{doctor.id}
+    </update>
+    
+    <update id="updateFansCount">
+        update doctor set fans_count=fans_count+#{add_count} where id=#{id} and fans_count=#{expect_count}
+    </update>
+    
+    
+    
+    <delete id="deleteById">
+        update  doctor set status=2 where id=#{id}
+    </delete>
+	
+	 <!-- 修改记录，只修改只不为空的字段 -->  
+	<update id="updateBySelective" parameterType="doctor" >  
+	    update doctor set   
+	    <trim  suffixOverrides="," >  
+	    <if test="doctor.name != ''  ">  
+	        name=#{doctor.name},  
+	    </if>  
+	    <if test="doctor.gender != null  ">  
+	        gender=#{doctor.gender},  
+	    </if>   
+	    <if test="doctor.level != ''  ">  
+	        level=#{doctor.level},  
+	    </if>
+		<if test="doctor.hospitalId>0 ">  
+	        hospital_id=#{doctor.hospitalId},  
+	    </if>   	 
+		<if test="doctor.hospitalName != ''  ">  
+	        hospital_name=#{doctor.hospitalName},  
+	    </if>   
+	    <if test="doctor.specialty != ''  ">  
+	        specialty=#{doctor.specialty},  
+	    </if>  
+	    <if test="doctor.introduction != ''  ">  
+	        introduction=#{doctor.introduction},  
+	    </if>
+		<if test="doctor.headImgUrl != ''  ">  
+	        head_img_url=#{doctor.headImgUrl},  
+	    </if>
+	 	<if test="doctor.qrImgUrl != ''  ">  
+	        qr_img_url=#{doctor.qrImgUrl},  
+	    </if>	
+		<if test="doctor.qualificationId != ''  ">  
+	        qualification_id=#{doctor.qualificationId},  
+	    </if>  
+		<if test="doctor.officeTele != ''  ">  
+	        officeTele=#{doctor.officeTele},  
+	    </if>
+		<if test="doctor.mobilePhone != ''  ">  
+	        mobilePhone=#{doctor.mobilePhone},  
+	    </if>
+		<if test="doctor.deptId>0  ">  
+	        dept_id=#{doctor.deptId},  
+	    </if>	    
+		<if test="doctor.deptName != ''  ">  
+	        dept_name=#{doctor.deptName},  
+	    </if>
+		<if test="doctor.teacherLevel != ''  ">  
+	        teacher_level=#{doctor.teacherLevel},  
+	    </if>
+	    </trim> where id=#{doctor.id}  
+	</update>  
+	
+</mapper>

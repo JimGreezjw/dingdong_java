@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.RegisterMapper">
+    <resultMap type="register" id="registerMap">
+        <id property="id" column="id" />
+        <result property="seq" column="seq" />
+        <result property="registerTime" column="register_time" />
+        <result property="expireTime" column="expire_time" />
+        <result property="scheduleId" column="schedule_id" />
+        <result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+        <result property="patientId" column="patient_id" />
+		<result property="patientName" column="patient_name" />
+		<result property="doctorId" column="doctor_id" />
+		<result property="doctorName" column="doctor_name" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="hospitalName" column="hospital_name" />
+		<result property="scheduleDate" column="schedule_date" />
+		<result property="timeSlot" column="time_slot" />
+		<result property="status" column="status" />
+        <result property="createTime" column="create_time" />
+        <!--  <result property="certificateId" column="certificate_id" />
+        <result property="userRelation" column="user_relation" />-->
+        <result property="revisit" column="revisit" />
+        <result property="phenomenon" column="phenomenon" />
+        <result property="attachNo" column="attach_no" />
+        <result property="deposit" column="deposit" />
+        <result property="hospitalRegisterId" column="hospital_register_id" />       
+        
+    </resultMap>
+    
+    
+     <select id="findById"  resultMap="registerMap">
+		select * from register where id = #{id} 
+    </select>       
+    
+    <select id="findByScheduleId"  resultMap="registerMap">
+		select * from register where schedule_id = #{scheduleId} 
+    </select> 
+
+     <select id="findByDoctorIdAndHospitalIdAndScheduleDateAndStatus"  resultMap="registerMap">
+		select * from register where schedule_date = #{scheduleDate} and doctor_id = #{doctorId} 
+		 and hospital_id like ${hospitalId} and status like ${status} order by seq
+    </select>       
+    
+     <select id="findByDoctorIdHospitalIdStatusOrderByCreateTime"  resultMap="registerMap">
+		 select * from register where doctor_id = #{doctorId} 
+		 and hospital_id like ${hospitalId} and status like ${status} order by create_time
+    </select>      
+    
+    <select id="getArrivedQueue" resultMap="registerMap">
+		select * from register
+			 where doctor_id = #{schedule.doctorId} and hospital_id = #{schedule.hospitalId}  and status = -1
+			 order by seq asc limit #{schedule.issueNum}
+    </select>    
+    
+    <select id="findByStatusAndDate" resultMap="registerMap">
+		select * from register where status = #{status} and create_time &lt;= #{queryDate}
+    </select>
+    
+    <select id="findByUserIdAndScheduleId"  resultMap="registerMap">
+		select * from register where user_id = #{userId} and schedule_id = #{scheduleId}  and status in(0,1,2)  
+		order by schedule_date asc
+    </select>
+    
+    <select id="findUnFinishedRegistersByDoctorId"  resultMap="registerMap">
+		select * from register where doctor_id = #{doctorId} and status in(1,2)  order by schedule_date asc 
+    </select>    
+    
+    <select id="findUnFinishedRegistersByHospitalId"  resultMap="registerMap">
+		select * from register where hospital_id = #{hospitalId} and status in(1,2)  order by schedule_date asc ,doctor_name
+    </select>    
+    
+    <select id="findUnFinishedByUserIdDoctorIdHospitalId"  resultMap="registerMap">
+		select * from register where  user_id = #{userId} and  doctor_id = #{doctorId}  and  hospital_id = #{hospitalId}  and status in(-1,0,1,2)  order by schedule_date asc 
+    </select>    
+    
+    <select id="findByDoctorIdScheduleDateOrderByUserName"  resultMap="registerMap">
+		select * from register where doctor_id = #{doctorId} and schedule_date=#{scheduleDate}  and  status in(1,2,3)  order by user_name asc 
+    </select>    
+    
+    <select id="findRegistersByUserIdScheduleId"  resultMap="registerMap">
+		select * from register where user_id=#{userId} and schedule_id = #{scheduleId}   
+    </select>
+    
+    
+    <select id="findByDoctorIdAndStatus"  resultMap="registerMap">
+		select * from register where doctor_id = #{doctorId} and status = ${status}
+		order by schedule_date asc
+    </select>
+    
+    <select id="findByDoctorIdAndHospitalIdAndStatus"  resultMap="registerMap">
+		select * from register where doctor_id = #{doctorId} and hospital_id = #{hospitalId} and status = ${status}
+		order by schedule_date asc
+    </select>
+    
+    <select id="findUnFinishedRegistersByUserIdDoctorIdHospitalId"  resultMap="registerMap">
+		select * from register where user_id = #{userId} and doctor_id= #{doctorId} and hospital_id= #{hospitalId}  and status in(-1,0,1,2)   order by create_time asc 
+    </select>    
+    
+    
+    <select id="findUnFinishedRegistersByUserId"  resultMap="registerMap">
+		select * from register where user_id = #{userId} and status in(-1,0,1,2)   order by schedule_date asc 
+    </select>    
+    
+    
+    <select id="findUnFinishedByScheduleId"  resultMap="registerMap">
+		select * from register where schedule_id = #{scheduleId} and status in(0,1,2)  order by create_time asc 
+    </select>    
+
+    
+     <select id="findByUserIdAndStatus"  resultMap="registerMap">
+		select * from register where user_id = #{userId} and status = ${status}
+		order by  create_time desc 
+    </select>
+    
+
+    
+    <insert id="addList" parameterType="java.util.List">
+ 		insert into register 
+ 			(
+ 				seq,
+ 				register_time,
+ 				expire_time,
+ 				schedule_id,
+ 				patient_id,
+ 				patient_name,
+ 				doctor_id,
+ 				doctor_name,
+ 				hospital_id,
+ 				hospital_name,
+ 				schedule_date,
+ 				time_slot,
+ 				status,
+ 				create_time,
+ 				user_id,
+ 				user_name,
+ 				revisit,
+ 				phenomenon,
+ 				attach_no,
+ 				deposit,
+ 				hospitalRegisterId
+ 			)
+ 		values
+	    <foreach collection="registerList" item="param1" index="index" separator="," open="" close="">
+	        (
+	        	#{param1.seq},
+	        	#{param1.registerTime},
+	        	#{param1.expireTime},
+	        	#{param1.scheduleId},
+	        	#{param1.patientId},
+	        	#{param1.patientName},
+	        	#{param1.doctorId},
+	        	#{param1.doctorName},
+	        	#{param1.hospitalId},
+	        	#{param1.hospitalName},
+	        	#{param1.scheduleDate},
+	        	#{param1.timeSlot},
+	        	#{param1.status},
+	        	#{param1.createTime},
+	        	#{param1.userId},
+	        	#{param1.userName},
+	        	#{param1.revisit},
+	        	#{param1.phenomenon},
+	        	#{param1.attachNo},
+	        	#{param1.deposit},
+	        	#{register.hospitalRegisterId}	        	
+	        )
+	    </foreach>
+	</insert>
+	
+    <update id="updateList">
+        <foreach item="param1" collection="registerList" open="" close="" separator=";">
+            update register set 
+            	seq = #{param1.seq},
+            	schedule_id = #{param1.scheduleId},
+            	patient_id = #{param1.patientId},
+            	patient_name = #{param1.patientName},
+            	doctor_id = #{param1.doctorId},
+            	doctor_name = #{param1.doctorName},
+            	hospital_id = #{param1.hospitalId},
+            	hospital_name = #{param1.hospitalName},
+            	schedule_date = #{param1.scheduleDate},
+            	time_slot = #{param1.timeSlot},
+            	status = #{param1.status},
+            	create_time = #{param1.createTime},
+            	expire_time = #{param1.expireTime}
+            where id = #{param1.id}
+        </foreach>
+    </update>
+    
+	<select id="findExpireRegister"  resultMap="registerMap">
+		select * from register where status = #{status} and expire_time &lt;= #{expireTime}
+    </select>
+
+	<update id="updateRegisterDesc">
+		update register set phenomenon = #{register.phenomenon}, attach_no = #{register.attachNo} where id = #{register.id}
+	</update>
+
+	<select id="statUserMsg"  resultMap="registerMap">
+		select status, count(*) as seq from register where user_id = #{userId} group by status;
+    </select>
+</mapper>

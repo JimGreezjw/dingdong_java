@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.DoctorHospitalMapper">
+
+    <resultMap type="doctorHospital" id="doctorHospitalMap">
+        <id property="id" column="id" />
+        <result property="doctorId" column="doctor_id" />
+        <!-- 医生名字 -->
+        <result property="doctorName" column="doctor_name" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="hospitalName" column="hospital_name" />
+		<result property="deptId" column="dept_id" />
+		<result property="deptName" column="dept_name" />
+		<result property="mainFlag" column="main_flag" />
+		<result property="minQueue" column="min_queue" />
+        <result property="registerFee" column="register_fee" />
+        <result property="deposit" column="deposit" />
+		<result property="status" column="status" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+		<result property="contactName" column="contact_Name" />
+		<result property="contactTele" column="contact_Tele" />
+		<result property="registerLevel" column="register_level" />		
+		
+		<!-- 当前排队人数，暂时都由sql动态映射 ，以后应该改成数据库实时填写-->
+		<result property="queueSize" column="queue_size" />
+        <result property="headImgUrl" column="head_img_url"/>
+    </resultMap>
+    
+
+	
+    <select id="findByDoctorId"  resultMap="doctorHospitalMap">
+        select dh.*,
+        (select count(*) from register q where q.doctor_id=dh.doctor_id and q.hospital_id=dh.hospital_id and status=-1) as queue_size,
+        (select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+         where dh.doctor_id=#{doctorId} and dh.status in(0,1) order by dh.hospital_name
+    </select>
+    
+    
+    
+    <select id="findMainDoctorHospital"  resultMap="doctorHospitalMap">
+        select dh.* from  doctor_hospital dh  
+         where dh.doctor_id=#{doctorId} and dh.status in(0,1) and dh.mainFlag=1 order by dh.hospital_name
+    </select>
+    
+    
+    
+    
+    <select id="findByHospitalId"  resultMap="doctorHospitalMap">
+        select dh.*,
+(select count(*) from register q where q.doctor_id=dh.doctor_id and q.hospital_id=dh.hospital_id and status=-1) as queue_size,
+        (select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+         where dh.hospital_id=#{hospitalId} and dh.status =1 
+		 <if test="filterText != null"> 
+           and  ((dept_name like concat('%',#{filterText},'%'))  or   (doctor_name like concat('%',#{filterText},'%')))
+        </if>
+		order by dh.dept_name, dh.doctor_name
+    </select>    
+    
+    <select id="findByDoctorIdStatus"  resultMap="doctorHospitalMap">
+        select dh.*,
+(select count(*) from register q where q.doctor_id=dh.doctor_id and q.hospital_id=dh.hospital_id and status=-1) as queue_size,
+        (select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+         where dh.doctor_id=#{doctorId} 
+         <if test="status != null"> 
+           and dh.status=#{status} 
+        </if> 
+        order by dh.hospital_name
+    </select>
+    
+    <select id="findByDoctorIdAndHospitalId"  resultMap="doctorHospitalMap">
+        select dh.*,
+(select count(*) from register q where q.doctor_id=dh.doctor_id and q.hospital_id=dh.hospital_id and status=-1) as queue_size,
+        (select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+        where dh.doctor_id=#{doctorId} and  dh.hospital_id=#{hospitalId}   and dh.status in(0,1) order by dh.hospital_name
+    </select>  
+    
+    
+    <select id="findById" resultMap="doctorHospitalMap">
+        select dh.*,
+(select count(*) from register q where q.doctor_id=dh.doctor_id and q.hospital_id=dh.hospital_id and status=-1) as queue_size,
+        (select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+        where dh.id=#{id}
+    </select>
+
+	
+    <insert id="addDoctorHospital">
+        insert into doctor_hospital (doctor_id,doctor_name, hospital_id,hospital_name,dept_id,dept_name,main_flag,min_queue,
+        register_fee,status,creator_id,create_time,contact_Name,contact_Tele,deposit,register_level) 
+		values(#{doctorHospital.doctorId},#{doctorHospital.doctorName}, #{doctorHospital.hospitalId},#{doctorHospital.hospitalName},#{doctorHospital.deptId},#{doctorHospital.deptName}
+		, #{doctorHospital.mainFlag}, #{doctorHospital.minQueue}, #{doctorHospital.registerFee},#{doctorHospital.status},
+		#{doctorHospital.creatorId}, #{doctorHospital.createTime}, #{doctorHospital.contactName}, #{doctorHospital.contactTele}, #{doctorHospital.deposit}, #{doctorHospital.registerLevel})
+			<selectKey resultType="java.lang.Long" keyProperty="doctorHospital.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+    <insert id="addDoctorHospitals"  parameterType="java.util.List">
+        insert into doctor_hospital (doctor_id,doctor_name, hospital_id,hospital_name,dept_id,dept_name,main_flag,min_queue,
+        register_fee,status,creator_id,create_time,contact_Name,contact_Tele,deposit,register_level) 
+	    <foreach collection="doctorHospitals" item="doctorHospital" index="index" separator="," >
+		values(#{doctorHospital.doctorId},#{doctorHospital.doctorName},  #{doctorHospital.hospitalId},#{doctorHospital.hospitalName},#{doctorHospital.deptId},#{doctorHospital.deptName}
+		, #{doctorHospital.mainFlag}, #{doctorHospital.minQueue}, #{doctorHospital.registerFee},#{doctorHospital.status},
+		#{doctorHospital.creatorId}, #{doctorHospital.createTime}, #{doctorHospital.contactName}, #{doctorHospital.contactTele}, #{doctorHospital.deposit}, #{doctorHospital.registerLevel})
+	    </foreach>
+	<!--	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="item.id">  
+            select LAST_INSERT_ID();  
+       </selectKey>   -->
+	 </insert>
+    <update id="updateDoctorHospital">
+        update doctor_hospital set doctor_id=#{doctorHospital.doctorId},  doctor_name=#{doctorHospital.doctorName},
+         hospital_id=#{doctorHospital.hospitalId},  hospital_name=#{doctorHospital.hospitalName}, 
+          dept_id=#{doctorHospital.deptId}, dept_name=#{doctorHospital.deptName} ,main_flag=#{doctorHospital.mainFlag},
+		min_queue=#{doctorHospital.minQueue}, register_fee=#{doctorHospital.registerFee},
+		 status=#{doctorHospital.status},contact_Name=#{doctorHospital.contactName},contact_Tele=#{doctorHospital.contactTele} ,deposit=#{doctorHospital.deposit}  ,register_level=#{doctorHospital.registerLevel}  where id=#{doctorHospital.id}
+    </update>
+    
+    <update id="updateDoctorHospitalStatus">
+        update doctor_hospital set status=#{status},  hospital_name=#{doctorHospital.hospitalName},   dept_id=#{doctorHospital.deptId}, dept_name=#{doctorHospital.deptName} ,main_flag=#{doctorHospital.mainFlag},
+		min_queue=#{doctorHospital.minQueue}, register_fee=#{doctorHospital.registerFee}, status=#{doctorHospital.status}
+		,contact_Name=#{doctorHospital.contactName},contact_Tele=#{doctorHospital.contactTele} where id=#{doctorHospital.id}
+    </update>
+    
+    <update id="updateDoctorHospitals">
+    	<foreach collection="doctorHospitals" item="doctorHospital" index="index" separator="," >
+        update doctor_hospital set hospital_id=#{doctorHospital.hospitalId},  hospital_name=#{doctorHospital.hospitalName},   dept_id=#{doctorHospital.deptId}, dept_name=#{doctorHospital.deptName} ,main_flag=#{doctorHospital.mainFlag},
+		min_queue=#{doctorHospital.minQueue}, register_fee=#{doctorHospital.registerFee}, status=#{doctorHospital.status} 
+		,contact_Name=#{doctorHospital.contactName},contact_Tele=#{doctorHospital.contactTele} where id=#{doctorHospital.id}
+		</foreach>
+    </update>	
+	
+    <delete id="deleteById">
+        update doctor_hospital set status=2 where id=#{id}
+    </delete>
+	
+	<select id="findByHospitalAndDept"  resultMap="doctorHospitalMap">
+        select dh.*,(select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+         where dh.hospital_id=#{hospitalId} and dh.dept_id=#{deptId} and dh.status =1
+    </select>
+	
+	<select id="findByHospitalAndDeptAndDoctor"  resultMap="doctorHospitalMap">
+        select dh.*,(select dc.head_img_url from doctor dc where dc.id=dh.doctor_id) as head_img_url
+         from  doctor_hospital dh  
+         where dh.hospital_id=#{hospitalId} and dh.dept_id=#{deptId} and dh.doctor_id=#{doctorId} and dh.status =1
+    </select>  
+	
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.TreatmentMapper">
+    <resultMap type="treatment" id="treatmentMap">
+        <id property="id" column="treatment_id" />
+        <result property="treatmentType" column="treatment_type" />
+		<result property="treatmentState" column="treatment_state" />
+		<result property="patientId" column="patient_id" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="doctorId" column="doctor_id" />
+		<result property="scheduleId" column="schedule_id" />
+		<result property="recommendTime" column="recommend_time" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+		<result property="modifierId" column="modifier_id" />
+		<result property="modifyTime" column="modify_time" />
+		<result property="notes" column="notes" />
+    </resultMap>
+	
+	
+    
+	
+	
+    <select id="findAllTreatments" resultMap="treatmentMap">
+        select * from treatment;
+    </select>
+    
+    <select id="findTreatmentById" resultMap="treatmentMap">
+        select * from treatment where treatment_id=#{id}
+    </select>
+    
+    <delete id="deleteTreatment">
+        delete from treatment where treatment_id=#{id}
+    </delete>
+
+</mapper>

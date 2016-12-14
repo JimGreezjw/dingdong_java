@@ -1,0 +1,46 @@
+<html>
+<body onload="onLoad()">
+	aaaaaaaaaaaaaaaaaaaaaaaa
+<script>
+function getQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+function onLoad() {
+		var userId =getQueryString("userId");  //$location.search().userId;
+		if (userId)
+			localStorage["userId"] =userId;
+		//else
+		//	userId = localStorage["userId"];
+		
+		
+		
+		if(!userId)
+		 {
+			 var appId = getQueryString("appId");
+			 if(appId&&appId!="") {
+				 window.localStorage["terminalType"] = "wx";
+				 var destUrl=encodeURIComponent(window.location);
+				 //获取openId
+				 var hostInfo = "http://" + window.location.host;
+				 var redirectUrl = hostInfo + "/dingdong/wechat/ddmz?actionType=wxbindCallBack&destUrl="+destUrl;
+				 var wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appId
+				 + "&redirect_uri="	+ encodeURIComponent(redirectUrl)
+				 + "&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+				 alert(url);
+				 location.href = wxUrl;
+				 return;
+			 }
+	 	}
+		
+		else
+		{
+			alert("the fetched userId is "+userId);
+		}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.PatientCondMapper">
+    <resultMap type="patient_cond" id="patientCondMap">
+        <id property="id" column="cond_id" />
+        <result property="registerId" column="register_id" />
+		<result property="condSeq" column="cond_seq" />
+		<result property="condDesc" column="cond_desc" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+		<result property="modifierId" column="modifier_id" />
+		<result property="modifyTime" column="modify_time" />
+		<result property="notes" column="notes" />
+    </resultMap>
+	
+	
+    
+    <!-- <select id="findAllPatientConds" resultType="patient_cond" resultMap="patientCondMap">
+        select * from patient_cond;
+    </select>
+    
+    <select id="findPatientCondById" resultType="patient_cond" resultMap="patientCondMap">
+        select * from patient_cond where cond_id=#{id}
+    </select>
+ -->    
+    <delete id="deletePatientCond">
+        delete from patient_cond where cond_id=#{id}
+    </delete>
+
+</mapper>

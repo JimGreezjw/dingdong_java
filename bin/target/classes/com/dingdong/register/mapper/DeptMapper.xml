@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.DeptMapper">
+    <resultMap type="dept" id="deptMap">
+        <id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+    </resultMap>
+	
+	<insert id="addDept">
+        insert into dept (name, parentId) 
+		values(#{dept.name}, #{dept.parentId})
+			<selectKey resultType="java.lang.Long" keyProperty="dept.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+	
+    
+    <select id="findAllDepts" resultMap="deptMap">
+        select * from dept
+                 <if test="filterText != null"> 
+           where     (name like concat('%',#{filterText},'%'))
+        </if> 
+    </select>
+    
+    <select id="findById" resultMap="deptMap">
+        select * from dept where id=#{id}
+    </select>
+    
+    <select id="findByName" resultMap="deptMap">
+        select * from dept where name=#{name}
+    </select>
+	
+    <select id="findByParentId" resultMap="deptMap">
+        select * from dept where parent_id=#{parentId}
+    </select>
+	
+    <delete id="deleteHospital">
+        delete from dept where id=#{id}
+    </delete>
+
+</mapper>

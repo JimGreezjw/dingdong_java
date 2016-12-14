@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<ToUserName><![CDATA[liao]]></ToUserName>
+	<FromUserName><![CDATA[dingdong]]></FromUserName>
+	<CreateTime>1452969642861</CreateTime>
+	<MsgType><![CDATA[news]]></MsgType>
+	<ArticleCount>1</ArticleCount>
+	<Articles>
+		<item>
+			<Title>欢迎使用叮咚门诊</Title>
+			<Description><![CDATA[叮咚一声，帮您敲响名医之门!叮咚门诊——名医“第二门诊”，国内首家专业的“互联网+门诊”服务平台，旨在引导名医多点执业并为病患提供专业、优质、个性化的门诊医疗服务，实现“好看病，看好病”的目标。 请点击原文链接直接进入官网。]]></Description>
+			<PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/d7iahysxQQ9nVr3UbRjudk47KXD88ZasICwPib11qWXHTLlnQib2gXOVVw2Yr09EVX6iajv216Kgx116NrmS6Ydvug/0?wx_fmt=jpeg]]></PicUrl>
+			<Url><![CDATA[http://www.yushansoft.com/dingdong/v1/index.html?appId=wxb031b2ffa1d3900a]]></Url>
+		</item>
+	</Articles>
+</xml>
+

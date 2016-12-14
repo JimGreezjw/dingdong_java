@@ -1,0 +1,121 @@
+<!--  <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.QueueMapper">
+    <resultMap type="queue" id="queueMap">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="doctorId" column="doctor_id" />
+		<result property="doctorName" column="doctor_name" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="hospitalName" column="hospital_name" />
+		<result property="status" column="status" />
+		<result property="appointmentTime" column="appointment_time" />
+        <result property="createTime" column="create_time" />
+        <result property="queueNum" column="queue_num" />
+    </resultMap>
+    
+    <select id="findById" resultMap="queueMap">
+		select * from queue where id = #{id}
+    </select>
+  
+    <select id="statQueueNumByHospital" resultMap="queueMap">
+    	select q.doctor_id, (select d.name from doctor d where d.id = q.doctor_id) as doctor_name,
+    		   q.hospital_id, (select h.name from hospital h where h.id = q.hospital_id) as hospital_name,
+    		   count(q.queue_num) as queue_num
+    	  from queue q
+    	 where q.doctor_id = #{doctorId} and q.status = #{status}
+    	 group by q.doctor_id, q.hospital_id
+    </select>
+
+    <select id="statQueueNumByDoctor" resultMap="queueMap">
+    	select q.doctor_id, (select d.name from doctor d where d.id = q.doctor_id) as doctor_name,
+    		   q.hospital_id, (select h.name from hospital h where h.id = q.hospital_id) as hospital_name,
+    		   count(q.queue_num) as queue_num
+    	  from queue q
+    	 where q.hospital_id = #{hospitalId} and q.status = #{status}
+    	 group by  q.hospital_id,q.doctor_id
+    </select>
+    
+    <select id="findByUserIdAndDoctorIdAndHospitalIdAndStatus" resultMap="queueMap">
+			select * from queue where user_id = #{userId} and doctor_id = #{doctorId} and hospital_id = #{hospitalId} and status = #{status} 
+    </select>
+        
+     <select id="findByDoctotrIdAndHospitalIdAndStatusOrderByCreateTime" resultMap="queueMap">
+			select * from queue
+			 where doctor_id = #{doctorId} and hospital_id = #{hospitalId}  and status = #{status}
+			 order by create_time asc 
+    </select>
+           
+     <select id="findByUserIdAndStatusOrderByCreateTime" resultMap="queueMap">
+	     select     q.id, q.user_id, q.user_name, q.doctor_id, q.doctor_name, q.hospital_id, q.hospital_name, q.status,
+				(select count(*) from queue qq where qq.doctor_id = q.doctor_id and qq.hospital_id = q.hospital_id
+					and qq.status = q.status and qq.id &lt;=q.id) as queue_num, q.appointment_time, q.create_time
+		  from queue q where q.user_id = #{userId} and q.status = #{status} order by q.create_time asc
+    </select> 
+    
+    <select id="findByDoctotrIdAndHospitalIdAndStatusOrderByCreateTimeLimitNum" resultMap="queueMap">
+		select * from queue
+			 where doctor_id = #{doctorId} and hospital_id = #{hospitalId}  and status = #{status}
+			 order by create_time asc limit #{presetNum}
+    </select> 
+    
+    <insert id="addList" parameterType="java.util.List">
+ 		insert into queue 
+ 			(
+ 				user_id,
+ 				user_name,
+ 				doctor_id,
+  				doctor_name,
+ 				hospital_id,
+  				hospital_name,
+ 				status,
+ 				create_time,
+ 				appointment_time,
+ 				queue_num
+ 			)
+ 		values
+	    <foreach collection="queueList" item="param1" index="index" separator="," open="" close="">
+	        (
+	        	#{param1.userId},
+	        	#{param1.userName},
+	        	#{param1.doctorId},
+	        	#{param1.doctorName},
+	        	#{param1.hospitalId},
+	        	#{param1.hospitalName},	   
+	        	#{param1.status},
+	        	#{param1.createTime},
+	        	#{param1.appointmentTime},
+	        	#{param1.queueNum},	        	
+	        )
+	    </foreach>
+	</insert>
+
+    <update id="updatequeueListStatus" parameterType="java.util.List">
+        <foreach item="param1" collection="queueList" open="" close="" separator=";">
+         	update queue <set> status = #{param1.status} </set> where id = #{param1.id}
+        </foreach>
+    </update>	
+	
+    <update id="saveList" parameterType="java.util.List">
+        <foreach item="param1" collection="queueList" open="" close="" separator=";">
+            update queue
+             <set>
+            	user_id = #{param1.userId},
+            	user_name = #{param1.userName},
+            	doctor_id = #{param1.doctorId},
+            	doctor_name = #{param1.doctorName},
+            	hospital_id = #{param1.hospitalId},
+            	hospital_name = #{param1.hospitalName},
+            	status = #{param1.status},
+            	appointment_time = #{param1.appointmentTime},
+            	create_time = #{param1.createTime},
+            	queue_num=#{param1.queueNum}	
+             </set>
+            where id = #{param1.id}
+        </foreach>
+    </update>
+    
+
+
+</mapper>-->

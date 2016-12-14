@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.PatientMapper">
+
+    <resultMap type="patient" id="patientMap">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+		<result property="gender" column="gender" />
+		<result property="birthday" column="birthday" />
+		<result property="address" column="address" />
+		<result property="phone" column="phone" />
+		<result property="createTime" column="create_time" />
+		<result property="userId" column="user_id" />		
+		<result property="certificateId" column="certificate_Id" />
+		<result property="userRelation" column="user_relation" />
+		<result property="status" column="status" />		
+    </resultMap>
+    
+    <select id="findAllPatients" resultType="patient" resultMap="patientMap">
+        select * from patient;
+    </select>
+    
+    <select id="findById" resultType="patient" resultMap="patientMap">
+        select * from patient where id=#{id}
+    </select>
+	
+	<select id="findPatientByUserId" resultType="patient" resultMap="patientMap">
+        select * from patient where user_Id=#{userId} and status in(0,1) order by name
+    </select>
+	
+	<insert id="addPatient" >
+        insert into patient (name, gender,birthday,address, phone,create_Time,user_id,certificate_Id,user_relation)
+		 values(#{patient.name}, #{patient.gender},#{patient.birthday}, #{patient.address}, #{patient.phone}, #{patient.createTime}, #{patient.userId}, #{patient.certificateId}, #{patient.userRelation})
+			<selectKey resultType="java.lang.Long"   keyProperty="patient.id"  order="AFTER" >  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey>   
+	</insert>
+    
+    <insert id="addPatients">
+        insert into patient (name, gender,birthday,address, phone,create_Time,user_id,certificate_Id,user_relation)
+	    <foreach collection="patients" item="patient" index="index" separator="," >
+ values(#{patient.name}, #{patient.gender},#{patient.birthday}, #{patient.address}, #{patient.phone}, #{patient.createTime}, #{patient.userId}, #{patient.certificateId}, #{patient.userRelation})
+	    </foreach>
+		
+		<selectKey resultType="java.lang.Long" keyProperty="patient.id"  order="AFTER" >  
+		      SELECT LAST_INSERT_ID() AS ID   
+		  </selectKey>   
+         
+    </insert>
+
+    
+    <update id="updatePatients">
+        update patient set name=#{patient.name}, gender=#{patient.gender}, birthday=#{patient.birthday}, address=#{patient.address}, gender=#{patient.gender}, phone=#{patient.phone}
+		, create_time=#{patient.createTime}, user_id=#{patient.userId} , certificate_Id=#{patient.certificateId} , user_relation=#{patient.userRelation}  where id=#{patient.id}
+    </update>
+    
+    <delete id="deleteById">
+        update patient set status=2 where id=#{id}
+    </delete>
+	
+	
+</mapper>

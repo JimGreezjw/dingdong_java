@@ -1,0 +1,59 @@
+<ion-view view-title="叮咚医邦">
+    <ion-header-bar class="bar bar-calm" align-title="center">
+        <a href="#/tab/accountAll" class="button button-clear ion ion-chevron-left" >返回</a>
+        <h1 class="title">我的积分</h1>
+        <h2 class="button button-clear " ng-click="showConfirme('说明')" >说明</h2>
+        <!--<h1 class="title">{{vm.transferType}}</h1>-->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <!--<div class="button-bar">-->
+            <!--<button class="{{vm.transferType0}}" ng-click="showTransfer('0')">余额账单</button>-->
+            <!--<button class="{{vm.transferType1}}" ng-click="showTransfer('1')">积分账单</button>-->
+        <!--</div>-->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+
+
+    </ion-header-bar>
+
+    <ion-content class="row-no-padding">
+
+        <!--<ion-refresher on-refresh="doRefresh()"-->
+                       <!--pulling-text="下拉刷新...."-->
+                       <!--refreshing-text="正在刷新!"-->
+                       <!--refreshing-icon="ion-loading-b">-->
+        <!--</ion-refresher>-->
+        <div class="item item-avatar" style="background:#ffc900;">
+            <img ng-src="http://www.yushansoft.com/dingdong/images/sys/score.png">
+            <h2>账户积分（咚）</h2>
+            <h1 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{score}}</h1>
+        </div>
+        <!--<ion-list>-->
+            <!--<label class="item item-text-wrap">-->
+                <!--　1）什么是叮咚？<br/>-->
+                <!--&nbsp;&nbsp;&nbsp;&nbsp;叮咚是叮咚医邦在线给予广大用户的虚拟货币的奖励，可以用于支付，直抵现金。-->
+                <!--<br/>-->
+               <!--&nbsp;&nbsp;&nbsp; 2）叮咚折抵现金比例是多少？<br/>-->
+                <!--&nbsp;&nbsp;&nbsp;&nbsp; 叮咚折抵现金比例是100:1，100叮咚相当于1元人民币。-->
+            <!--</label>-->
+        <!--</ion-list>-->
+        <ddexpander  expander-title='expanderTitle'>
+            <ion-list>
+                <div ng-repeat="userTransfer in vm.transferList">
+                    <ion-item class="item-remove-animate item-avatar item-icon-right"
+                              type="item-text-wrap" href="#/tab/patients/{{patient.userId}}/{{patient.id}}">
+                        <img ng-src="{{userTransfer.headImgUrl}}" err-src="http://www.yushansoft.com/dingdong/images/sys/money_bag.png">
+                        <h2  ><span style="float:left;" >{{userTransfer.reasonDesc}}</span><span style="  float:right; " ng-style="{'color': {true:'green',false:'red'}[userTransfer.amount>0]}">{{userTransfer.amount}}咚</span></h2>
+                        <p ><span style=" float:left; " >{{userTransfer.fromUserName}}</span><span style="float:right;" >{{userTransfer.transactionTime| dateFormat1}}</span></p>
+                    </ion-item>
+                </div>
+            </ion-list>
+        </ddexpander>
+
+
+        <div  ng-show="showOrNot" class="center" >
+            <div class="title">
+                还没有积分记录!
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

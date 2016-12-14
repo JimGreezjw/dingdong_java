@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.SmsValidateMessageMapper">
+	<resultMap type="valimessage" id="messageMap">
+		<id property="uid" column="message_uid" />
+		<result property="mobileNo" column="mobile_no" />
+		<result property="validateCode" column="validate_code" />
+		<result property="sendTime" column="send_time" />
+		<result property="expireTime" column="expire_time" />
+		<result property="creationTime" column="creation_time" />
+		<result property="modifyTime" column="modify_time" />
+	</resultMap>
+
+	<select id="findMessageVoByMobileNo" resultType="valimessage"
+		resultMap="messageMap">
+		select * from sms_valimessage where mobile_no = #{mobileNo} order by send_time desc
+	</select>
+
+	<insert id="insertMessageVO" parameterType="valimessage">
+		insert into sms_valimessage(mobile_no, validate_code, send_time, expire_time)
+		values(#{messageVO.mobileNo}, #{messageVO.validateCode}, #{messageVO.sendTime}, #{messageVO.expireTime})
+	</insert>
+
+	<update id="updateMessageVO">
+		update sms_valimessage set validate_code = #{validateCode}, send_time = #{sendTime}, expireTime = #{expireTime} where
+		message_uid = #{uid}
+	</update>
+	
+	<delete id="removeExpireMessage">
+		delete from sms_valimessage where expire_time &lt;= #{expireTime}
+	</delete>
+</mapper>

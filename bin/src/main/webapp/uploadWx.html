@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>uploadWechat.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<style>
+input{
+width:80%;
+height:100px;
+font-size:18px;
+}
+</style>
+  </head>
+  
+  <body>
+<form method="post"  action="https://api.weixin.qq.com/cgi-bin/material/add_material"  enctype="multipart/form-data">
+<p>验证码</p>
+<input type="text" name="access_token" value="SLE3O8HwIAnFLA9r3dYs3tJlLfiJPfZLKRb4n8m-EIxADnpksaeEKuZ2uilnLdCLmFaDE8Ir_FghYEKcMWmHtqz3uWge7rp7Ykg61jImsRgMQJaABATXQ">
+<p>素材类型</p>
+<input type="text" name="type" value="image">
+<p>请选择素材文件</p>
+<input type="file" name="media">
+<br>
+<input type="submit" name="submit"  value="向微信上传永久素材">
+</form>
+  </body>
+</html>

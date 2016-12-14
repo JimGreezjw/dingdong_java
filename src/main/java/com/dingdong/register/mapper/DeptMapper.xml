@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.DeptMapper">
+    <resultMap type="dept" id="deptMap">
+        <id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+		<result property="deptOutline" column="dept_outline" />
+    </resultMap>
+    
+    
+    <resultMap type="dept" id="deptMapWithDoctorCount">
+        <id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+		<result property="deptOutline" column="dept_outline" />
+		<!-- 增加属性医生数量 -->
+		<result property="doctorCount" column="doctor_count" />		
+    </resultMap>
+	
+	<insert id="addDept">
+        insert into dept (name, parentId,dept_outline) 
+		values(#{dept.name}, #{dept.parentId}, #{dept.deptOutline})
+			<selectKey resultType="java.lang.Long" keyProperty="dept.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+	
+
+    
+    <select id="findAllDepts" resultMap="deptMap">
+        select * from dept
+                 <if test="filterText != null"> 
+           where     (name like concat('%',#{filterText},'%'))
+        </if>
+		order by parent_id, name
+    </select>
+    
+    <select id="findById" resultMap="deptMap">
+        select * from dept where id=#{id}
+    </select>
+    
+    <select id="findByName" resultMap="deptMap">
+        select * from dept where name=#{name}
+    </select>
+	<!-- 获取所有子部门,包含医生数量 -->
+    <select id="findByParentId" resultMap="deptMapWithDoctorCount">
+           select dept.*,(select count(*) from doctor where dept_id=dept.id) as doctor_count
+            from dept where parent_Id=#{parentId} order by dept_outline
+    </select>
+	
+    <delete id="deleteById">
+        delete from dept where id=#{id}
+    </delete>
+
+	<!-- 获取顶级科室 -->
+	<select id="findTopDepts" resultMap="deptMap">
+           select dept.* from dept where parent_id = 0 order by id asc
+    </select>
+    
+    
+    <!-- 获取父科室全部层级的子科室 -->
+    <select id="findRecursiveSubDepts" resultMap="deptMap">
+           select dept.* from dept where dept_outline != #{parentDeptOutline} and dept_outline like concat(#{parentDeptOutline}, '%')
+            order by dept_outline asc
+    </select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.ScheduleMapper">
+    <resultMap type="schedule" id="scheduleMap">
+        <id property="id" column="id" />
+        <result property="status" column="status" />
+        <result property="doctorId" column="doctor_id" />
+        <result property="doctorName" column="doctor_name" />
+        <result property="hospitalId" column="hospital_id" />
+        <result property="hospitalName" column="hospital_name" />
+		<result property="scheduleDate" column="schedule_date" />
+        <result property="timeSlot" column="time_slot" />
+		<result property="issueNum" column="issue_num" />
+		<result property="registeredNum" column="registered_num" />
+		<result property="createTime" column="create_time" />
+        <result property="startTime" column="start_time" />        
+        <result property="endTime" column="end_time" />
+		<result property="creatorId" column="creator_id" />   
+    </resultMap>
+    
+	<select id="findById"  resultMap="scheduleMap">
+		select * from schedule where id = #{id}
+	</select>
+	
+	<select id="findDoctorScheduleList" resultMap="scheduleMap">
+		select * from schedule where doctor_id = #{doctorId}  and schedule_date between #{beginDate} and #{endDate}
+		 and status = 1 order by schedule_date desc, time_slot
+	</select>
+	
+	<select id="findDoctorScheduleListWithDraft" resultMap="scheduleMap">
+		select * from schedule where doctor_id = #{doctorId}  and schedule_date between #{beginDate} and #{endDate}
+		 and status &lt;= 1 order by schedule_date desc, time_slot
+	</select>
+	
+	<select id="findByDoctorIdHospitalIdBeginDateEndDateStatus" resultMap="scheduleMap">
+		select * from schedule where doctor_id = #{doctorId}  
+		<if test="beginDate != null"> 
+           and schedule_date &gt;= #{beginDate} 
+        </if> 
+		<if test="endDate != null"> 
+           and schedule_date &lt;= #{endDate} 
+        </if> 
+		<if test="hospitalId != null and hospitalId>0"> 
+           and hospital_Id= #{hospitalId}  
+        </if> 
+		and status = #{status} order by hospital_Id, schedule_date desc,time_slot
+	</select>
+    
+	<select id="findUnactiveScheduleList"  resultMap="scheduleMap">
+		select * from schedule where status = #{status} and schedule_date &lt;= #{queryDate} 
+	</select>
+	
+	<select id="findUnFullScheduleList"  resultMap="scheduleMap">
+		select * from schedule where status = #{status} and registered_num &lt; issue_num
+		   and schedule_date &gt;= #{beginDate} and schedule_date &lt;= #{endDate}
+	</select>
+</mapper>

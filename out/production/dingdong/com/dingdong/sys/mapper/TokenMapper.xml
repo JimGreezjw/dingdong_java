@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.TokenMapper">
+	<resultMap type="token" id="tokenMap">
+		<id property="id" column="id" />
+		<result property="tokenId" column="token_id" />
+		<result property="userId" column="user_id" />
+		<result property="userAgent" column="user_agent" />
+		<result property="deadline" column="deadline" />
+		<result property="createTime" column="create_time" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="findById" resultMap="tokenMap">
+		select * from token where id=#{id} and status = 1
+	</select>
+
+	<select id="findByTokenId" resultMap="tokenMap">
+		select * from token where token_id=#{tokenId} and status = 1
+	</select>
+
+	<insert id="addToken">
+		insert into token
+		(token_id,user_id,user_agent,deadline,create_time,status)
+		values(#{token.tokenId},#{token.userId},
+		#{token.userAgent},#{token.deadline},
+		#{token.createTime},#{token.status})
+		<selectKey resultType="java.lang.Long" keyProperty="token.id">
+			SELECT
+			LAST_INSERT_ID() AS ID
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById">
+        update token set status=2 where id=#{id}
+    </delete>
+
+	<select id="findByUserIdAndUserAgent" resultMap="tokenMap">
+		select * from token where user_id=#{userId} and user_agent=#{userAgent} and status = 1
+	</select>
+	
+	<update id="updateTokenDeadline">
+        update token set deadline=#{deadline} where id=#{id}
+    </update>
+	
+</mapper>

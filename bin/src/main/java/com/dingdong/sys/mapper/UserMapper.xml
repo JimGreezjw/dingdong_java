@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.UserMapper">
+
+    <resultMap type="user" id="userMap">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+		<result property="gender" column="gender" />
+		<result property="birthday" column="birthday" />
+		<result property="address" column="address" />
+		<result property="phone" column="phone" />
+		<result property="role" column="role" />
+		<result property="createTime" column="create_time" />
+		<result property="openId" column="wx_openId" />		
+		<result property="nickName" column="nick_name" />
+		<result property="country" column="country" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="headImgUrl" column="head_img_url" />
+		<result property="role" column="role" />
+		<result property="certificateId" column="certificate_Id" />		
+		<result property="balance" column="balance" />		
+		<result property="score" column="score" />		
+		<result property="status" column="status" />			
+    </resultMap>
+    
+    <select id="findAllUsers" resultType="user" resultMap="userMap">
+        select * from user;
+    </select>
+    
+    <select id="findById" resultType="user" resultMap="userMap">
+        select * from user where id=#{id}
+    </select>
+	
+	<select id="findUserByOpenId" resultType="user" resultMap="userMap">
+        select * from user where wx_openId=#{openId}
+    </select>
+	
+    <select id="findByIds" resultMap="userMap">
+        select * from user where id in
+          <foreach item="item" index="index" collection="ids" 
+                         open="(" separator="," close=")">
+                        #{item}
+           </foreach>
+    </select>
+
+	<insert id="addUser">
+        insert into user (name, gender,birthday,address,phone,role,create_time,wx_openId,nick_name,country,province,city,head_img_url,certificate_Id,status)
+		 values(#{user.name}, #{user.gender},#{user.birthday}, #{user.address}, #{user.phone},#{user.role}, 
+		 #{user.createTime},#{user.openId}, #{user.nickName},#{user.country},#{user.province},#{user.city},#{user.headImgUrl},#{user.certificateId},#{user.status})
+    </insert>
+    
+    <!-- 更新用户 -->
+    <update id="updateUser">
+        update user set name=#{user.name}, gender=#{user.gender},birthday=#{user.birthday},address=#{user.address}
+		,role=#{user.role},create_time=#{user.createTime},nick_name=#{user.nickName},country=#{user.country}
+		,province=#{user.province},city=#{user.city},head_img_url=#{user.headImgUrl},certificate_Id=#{user.certificateId} where id=#{user.id}
+    </update>
+   
+    <insert id="addUsers">
+        insert into user (name, gender,birthday,address,phone,role,create_time,wx_openId,nick_name,country,province,city,head_img_url)
+		 values(#{user.name}, #{user.gender},#{user.birthday}, #{user.address}, #{user.phone},#{user.role}, 
+		 #{user.createTime},#{user.openId} ,#{user.nickName},#{user.country},#{user.province},#{user.city},#{user.headImgUrl})
+    </insert>
+     <!--
+    <update id="updateUsers">
+        update user set name=#{user.name}, gender=#{user.gender},birthday=#{user.birthday},address=#{user.address}
+		,role=#{user.role},create_time=#{user.createTime},wx_openId=#{user.openId},nick_name=#{user.nickName},country=#{user.country}
+		,province=#{user.province},city=#{user.city},head_img_url=#{user.headImgUrl} where id=#{id}
+    </update>
+   -->
+
+   
+   
+
+   
+    <update id="updateUserPhone">
+        update user set phone=#{phone} where id=#{id}
+    </update>
+    
+     <update id="updateBalance">
+        update user set balance=balance+#{add_balance} where id=#{id} and balance=#{expect_balance}
+    </update>
+    
+    <update id="updateScore">
+        update user set score=score+#{add_score} where id=#{id} and score=#{expect_score}
+    </update>
+    
+    
+    <delete id="deleteById">
+        update  user set status=2 set id=#{id}
+    </delete>
+	
+	
+</mapper>

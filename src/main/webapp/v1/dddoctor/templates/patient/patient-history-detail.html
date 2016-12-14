@@ -1,0 +1,57 @@
+<ion-view view-title="叮咚医邦">
+    <ion-header-bar class="bar bar-calm" align-title="center">
+        <a href="#" ng-click="goBack();" class="button button-clear ion ion-chevron-left" >返回</a>
+        <h1 class="title"> {{patient.name}}</h1>
+    </ion-header-bar>
+    <ion-content class="row-no-padding">
+
+
+        <div class="">
+
+            <div class="item item-avatar">
+				<img ng-src="{{patient.headImgUrl}}" err-src="http://www.yushansoft.com/dingdong/images/sys/patient.png">
+
+                <h2>{{patient.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{patient.phone}}</h2>
+                <p>{{patient.gender | gender}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{patient.birthday | dateFormatAge}}岁</p>
+				<!--<p>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：{{patient.phone}}</p>-->
+            </div>
+        </div>
+ 		<ddexpander class='' expander-title='expanderTitle'>
+            
+			<!--<div ng-repeat="patientCond in patientConds">-->
+		        <!--{{patientCond.condDesc}}-->
+		    <!--</div>-->
+            &nbsp;&nbsp;&nbsp;&nbsp;{{register.phenomenon}}
+			
+        </ddexpander>
+        <div width="100%" height="40%" border="0" style="margin:0 0 0 0;text-align:center;margin:0 auto;" ng-hide="showsHide">
+
+            <ion-item ng-repeat="yusFile in yusFiles" >
+                <img style="max-width:250px;max-height:250px" ng-src="{{yusFile}}"  >
+            </ion-item>
+
+        </div>
+        <div class="item item-divider" align="left"  ng-hide="notShowEvals">
+            患者评价
+        </div>
+        <ion-list>
+            <ion-item ng-repeat="doctorEval in doctorEvals" class="item-remove-animate item-avatar item-icon-right"
+                      type="item-text-wrap">
+
+                <img ng-src="{{doctorEval.headImgUrl}}"
+                     err-src="http://www.yushansoft.com/dingdong/images/sys/consultation.png">
+                <p>{{doctorEval.evalDesc}}</p>
+                <p>{{doctorEval.tagsDesc}}</p>
+                <p>疗效：{{doctorEval.treatmentEffect}}星&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态度：{{doctorEval.serviceAttitude}}星</p>
+
+                <ion-option-button class="button-assertive" ng-click="remove(doctorEval)">
+                    删除
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+	<!--<div class="bar bar-subfooter bar-balanced">-->
+        <!--<h2 class="title" ng-click="showPopup()" >我要评价</h2>-->
+    <!--</div>-->
+</ion-view>

@@ -1,0 +1,28 @@
+﻿<ion-view>
+    <ion-header-bar class="bar bar-calm" align-title="center">
+        <a href="#/tab/patientsAll" class="button button-clear ion ion-chevron-left" >返回</a>
+        <h1 class="title">{{doctor.name}}</h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list card">
+            <div class="item item-avatar">
+                <img ng-src="{{doctor.headImgUrl}}"
+                     err-src="http://www.yushansoft.com/dingdong/images/doctors/doctor_0.png">
+
+                <h2>{{doctor.name}}</h2>
+
+                <p>{{doctor.hospitalName}}</p>
+
+                <p>{{doctor.level}}</p>
+            </div>
+        </div>
+        <table width="100%" height="80%" class="tableStyle">
+            <tr class="tableTrStyle" height="50%"  width="100%">
+                <td align="center" >
+                    <img  width="80%" height="60%"  ng-src="{{doctor.qrImgUrl}}">
+
+                </td>
+            </tr>
+        </table>
+    </ion-content>
+</ion-view>

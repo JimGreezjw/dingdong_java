@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.WechatTokenMapper">
+
+    <resultMap type="wechatToken" id="wechatTokenMap">
+        <id property="appId" column="appId" />
+        <result property="accessToken" column="access_token" />
+		<result property="jsapiTicket" column="jsapi_ticket" />
+		<result property="accessTokenLastUpdate" column="access_token_last_update" />
+		<result property="jsapiTicketLastUpdate" column="jsapi_ticket_last_update" />
+    </resultMap>
+    
+
+    
+    <select id="findById"  resultMap="wechatTokenMap" >
+        select * from wechat_token where appId=#{appId}
+    </select>
+
+	
+	<insert id="addWechatToken">
+        insert into wechat_token (appId, access_token,access_token_last_update) values(#{appId}, #{accessToken}, #{accessTokenLastUpdate})
+    </insert>
+
+    
+    <update id="updateAccessToken">
+        update wechat_token set access_token=#{accessToken}, access_token_last_update=#{accessTokenLastUpdate}   where appId=#{appId}
+    </update>
+    
+    <update id="updateJsapiTicket">
+        update wechat_token set jsapi_ticket=#{jsapiTicket}, jsapi_ticket_update_time=#{jsapiTicketLastUpdate}   where appId=#{appId}
+    </update>
+	
+	
+</mapper>

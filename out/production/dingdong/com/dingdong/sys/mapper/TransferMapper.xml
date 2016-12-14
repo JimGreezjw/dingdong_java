@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.TransferMapper">
+
+    <resultMap type="transfer" id="transferMap">
+        <id property="id" column="id" />
+        <result property="fromUserId" column="from_user_id" />
+		<result property="fromUserName" column="from_user_name" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="amount" column="amount" />
+		<result property="createTime" column="create_time" />
+		<result property="type" column="type" />		
+		<result property="status" column="status" />
+		<result property="transactionId" column="transaction_id" />
+		<result property="transactionTime" column="transaction_time" />		
+		<result property="reason" column="reason" />		
+		<result property="accountId" column="account_id" />
+    </resultMap>
+
+    <select id="findById" resultMap="transferMap">
+        select * from transfer where id=#{id}
+    </select>
+
+	<insert id="addTransfer">
+        insert into transfer (from_user_id, from_user_name,user_id,user_name,amount,create_time,type,status,reason,transaction_id,transaction_time)
+		 values(#{transfer.fromUserId}, #{transfer.fromUserName},#{transfer.userId}, #{transfer.userName}, #{transfer.amount},#{transfer.createTime}, 
+		 #{transfer.type},#{transfer.status},#{transfer.reason},#{transfer.transactionId},#{transfer.transactionTime})
+		 
+		 <selectKey resultType="java.lang.Long" keyProperty="transfer.id">  
+		      SELECT LAST_INSERT_ID() AS ID   
+		    </selectKey> 
+    </insert>
+
+ 
+    <update id="updateTransferSuccess">
+        update transfer set transaction_id=#{transactionId} ,transaction_time=#{transactionTime},status=1 where id=#{id} and status=0
+    </update>
+    
+    <select id="findByUserIdTypeStatus"  resultMap="transferMap">
+        select * from transfer  
+         where  user_Id =#{userId} and type=#{type} and status=#{status}
+	     order by create_time desc limit #{page.offset}, #{page.size};
+    </select>
+
+    <select id="findCurrentDateTransfer"  resultMap="transferMap">
+        select * from transfer where create_time &gt; curdate()
+    </select>
+	
+	<update id="confirmTransfer">
+        update transfer set status=1 where id=#{id} and status=0
+    </update>
+	
+	<select id="findAllSolvingTransfer"  resultMap="transferMap">
+       select * from transfer where status = 0 
+		<if test="beginDate != null"> 
+           and create_time &gt;= #{beginDate} 
+        </if> 
+		<if test="endDate != null"> 
+           and create_time &lt;= #{endDate} 
+        </if> 
+		order by create_time desc, reason
+    </select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.register.mapper.WeekScheduleMapper">
+    <resultMap type="weekSchedule" id="weekScheduleMap">
+        <id property="id" column="id" />
+        <result property="status" column="status" />
+        <result property="doctorId" column="doctor_id" />
+        <result property="doctorName" column="doctor_name" />
+        <result property="hospitalId" column="hospital_id" />
+        <result property="hospitalName" column="hospital_name" />
+		<result property="day" column="day" />
+        <result property="timeSlot" column="time_slot" />
+        <result property="startTime" column="start_time" />        
+        <result property="endTime" column="end_time" />        
+		<result property="issueNum" column="issue_num" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+    </resultMap>
+    
+	<select id="findById"  resultMap="weekScheduleMap">
+		select * from week_schedule where id = #{id}
+	</select>
+	
+	<select id="findByDay"  resultMap="weekScheduleMap">
+		select * from week_schedule where status= 1 and day = #{day}
+	</select>
+	
+	
+	<select id="findByDoctorIdHospitalIdStatus" resultMap="weekScheduleMap">
+		select * from week_schedule where doctor_id = #{doctorId}    and hospital_Id= #{hospitalId}  
+		and status = #{status} order by day,time_slot
+	</select>
+    
+	
+</mapper>

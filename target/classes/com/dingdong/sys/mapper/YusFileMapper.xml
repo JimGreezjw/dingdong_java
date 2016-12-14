@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.YusFileMapper">
+
+    <resultMap type="yusFile" id="yusFileMap">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="status" column="status" />
+		<result property="fileType" column="file_type" />
+		<result property="fileSize" column="file_size" />
+		<result property="fileUrl" column="file_url" />
+		<result property="locationType" column="location_type" />
+		<result property="createId" column="creator_id" />	
+		<result property="createTime" column="create_time" />
+    </resultMap>
+    
+
+    
+    <select id="findById"  resultMap="yusFileMap">
+        select * from yus_file where id=#{id}
+    </select>
+	
+    <select id="getUnTransferYusFiles"  resultMap="yusFileMap">
+        select * from yus_file where location_type=0 and create_time&lt;= #{beforeTime}
+    </select>
+	
+    <select id="findByIds" resultMap="yusFileMap">
+        select * from yus_file where id in
+          <foreach item="item" index="index" collection="ids" 
+                         open="(" separator="," close=")">
+                        #{item}
+           </foreach>
+    </select>
+
+	<insert id="addYusFile">
+        insert into yus_file (name, status,file_type,file_size,file_url,location_type,creator_id,create_time)
+		 values(#{yusFile.name}, #{yusFile.status},#{yusFile.fileType}, #{yusFile.fileSize}, #{yusFile.fileUrl}, 
+		 #{yusFile.locationType},#{yusFile.createId}, #{yusFile.createTime})
+		<selectKey resultType="java.lang.Long" keyProperty="yusFile.id">  
+	      SELECT LAST_INSERT_ID() AS ID   
+	    </selectKey> 
+    </insert>
+    
+    
+        <!-- 更新用户 -->
+    <update id="updateYusFile">
+        update yus_file set file_url=#{yusFile.fileUrl},location_type=#{yusFile.locationType}
+		where id=#{yusFile.id}
+    </update>
+    
+    <update id="updateYusFiles">
+            <foreach item="yusFile" collection="yusFileList" open="" close="" separator=";">
+        update yus_file set file_url=#{yusFile.fileUrl},location_type=#{yusFile.locationType}
+		where id=#{yusFile.id}
+        </foreach>
+
+    </update>
+    
+    <delete id="deleteById">
+        update  yus_file set status=2 set id=#{id}
+    </delete>
+	
+	
+</mapper>

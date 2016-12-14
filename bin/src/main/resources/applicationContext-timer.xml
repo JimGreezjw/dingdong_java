@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+ http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-3.2.xsd
+ http://www.springframework.org/schema/cache
+ http://www.springframework.org/schema/cache/spring-cache.xsd "
+	default-lazy-init="true">
+	<!--总控 -->
+	<bean id="doScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="autoFetchAccessTokenTrigger" />
+				<ref bean="autoFetchJsTicketTrigger" />
+				<!--<ref bean="autoDownLoadFileFromWxTrigger"/> -->
+				<ref bean="autoRemoveExpireMessageTrigger" />
+				<ref bean="autoActiveScheduleTrigger" />
+			</list>
+		</property>
+		<property name="startupDelay">
+			<value>120</value>
+		</property>
+	</bean>
+	<!-- 自动获取accestoken -->
+	<bean id="autoFetchAccessToken"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="wechatService" />
+		</property>
+		<property name="targetMethod">
+			<value>autoFetchAccessToken</value>
+		</property>
+	</bean>
+
+	<bean id="autoFetchAccessTokenTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="autoFetchAccessToken" />
+		</property>
+		<property name="cronExpression">
+			<value>0 7 * * * ?</value><!-- 整点触发 -->
+		</property>
+	</bean>
+
+	<!-- 自动获取js ticket -->
+	<bean id="autoFetchJsTicket"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="wechatService" />
+		</property>
+		<property name="targetMethod">
+			<value>autoFetchJsTicket</value>
+		</property>
+	</bean>
+
+	<bean id="autoFetchJsTicketTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="autoFetchJsTicket" />
+		</property>
+		<property name="cronExpression">
+			<value>0 7 * * * ?</value><!-- 每小时,过5分 -->
+		</property>
+	</bean>
+
+	<!-- 清除一天的失效短信 -->
+	<bean id="autoRemoveExpireMessage"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="smsValidateMessageService" />
+		</property>
+		<property name="targetMethod">
+			<value>removeExpireMessage</value>
+		</property>
+	</bean>
+
+	<bean id="autoRemoveExpireMessageTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="" />
+		</property>
+		<property name="cronExpression">
+			<!-- 每小时中的间隔 -->
+			<value>0 0 20 * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 自动激活日程 -->
+	<bean id="autoActiveSchedule"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="scheduleService" />
+		</property>
+		<property name="targetMethod">
+			<value>activeSchedule</value>
+		</property>
+	</bean>
+
+	<bean id="autoActiveScheduleTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="autoActiveSchedule" />
+		</property>
+		<property name="cronExpression">
+			<!-- 每小时中的间隔 -->
+			<value>0 10/1 0-23 * * ?</value>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script language="javaScript">
+        var ddybUserId = getQueryString("userId");  //$location.search().patientId;
+        localStorage.removeItem("ddybUserId");
+        localStorage.removeItem("doctorId");
+        if (ddybUserId)
+            localStorage["ddybUserId"] = ddybUserId;
+        else if(localStorage["ddybUserId"])
+            ddybUserId = localStorage["ddybUserId"];
+
+
+        var doctorId = getQueryString("doctorId");
+        if (doctorId)
+            localStorage["doctorId"] = doctorId;
+        else if(localStorage["doctorId"])
+            doctorId = localStorage["doctorId"];
+//               alert("there userId is "+ ddybUserId);
+//               alert("there doctorId is "+ doctorId);
+//               alert(window.location);
+        if (!ddybUserId) {
+                     var appId = getQueryString("appId");
+            if (appId && appId != "") {
+                window.localStorage["terminalType"] = "wx";
+                var destUrl = encodeURIComponent(window.location);
+                //获取openId
+                var hostInfo = "http://" + window.location.host;
+                var redirectUrl = hostInfo + "/dingdong/ddyb/loginCallback?destUrl=" + destUrl ;
+                var wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId
+                        + "&redirect_uri=" + encodeURIComponent(redirectUrl)
+                        + "&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+                //alert(wxUrl);
+                location.href = wxUrl;
+                }
+        }
+
+//        if(!localStorage["doctorId"]){
+//            var navigationUrl = "#/navigation";
+//            location.href = navigationUrl;
+//        }
+//        alert(ddybUserId);
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)return unescape(r[2]);
+            return null;
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>叮咚医邦</title>
+
+    <link href="//cdn.bootcss.com/ionic/1.2.1/css/ionic.css" rel="stylesheet">
+    <link href="http://www.yushansoft.com/dingdong/common/lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="http://www.yushansoft.com/dingdong/v1/dddoctor/css/style.css" rel="stylesheet">
+    <link href="http://www.yushansoft.com/dingdong/common/lib/ionic/css/datepick-style.css" rel="stylesheet">
+    <link href="http://www.yushansoft.com/dingdong/common/lib/ionic/css/calendar.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+
+</head>
+<body ng-app="dddoctorApp">
+<!--
+  The nav bar that will be updated as we navigate between views.
+-->
+
+<!--
+  The views will be rendered in the <ion-nav-view> directive below
+  Templates are in the /templates folder (but you could also
+  have templates inline in this html file if you'd like).
+-->
+<ion-nav-view></ion-nav-view>
+
+</body>
+
+<!-- ionic/angularjs js -->
+<!-- <script src="lib/ionic/js/ionic.bundle.js"></script>-->
+<script src="//cdn.bootcss.com/ionic/1.2.1/js/ionic.bundle.min.js"></script>
+<script src="http://www.yushansoft.com/dingdong/common/lib/ionic/js/ionic-datepicker.bundle.min.js"></script>
+<script src="http://www.yushansoft.com/dingdong/common/lib/ionic/js/angular/angular-resource.js"></script>
+<script src="http://www.yushansoft.com/dingdong/common/lib/ionic/js/calendar-tpls.min.js"></script>
+<!-- your app's js -->
+
+
+<script src="js/app.js"></script>
+<script src="js/routes/routes.js"></script>
+<script src="js/filters/filters.js"></script>
+<script src="js/directives/directives.js"></script>
+<script src="js/services/services.js"></script>
+<script src="js/controllers/controllers.js"></script>
+
+</html>

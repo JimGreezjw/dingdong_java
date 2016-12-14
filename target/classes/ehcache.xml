@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+    
+    <!--<diskStore path="java.io.tmpdir" />-->
+    <defaultCache eternal="false" maxElementsInMemory="2000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU"/>
+    
+    <cache name="basicDataCache" eternal="false" maxElementsInMemory="3000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="9000" memoryStoreEvictionPolicy="LRU"/>
+    
+    <cache name="defaultCache" eternal="false" maxElementsInMemory="2000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="3000" memoryStoreEvictionPolicy="LRU"/>
+    
+    <cache name="workRecordCache" eternal="false" maxElementsInMemory="3000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="9000" memoryStoreEvictionPolicy="LRU"/>
+    
+    
+    <cache name="baicDataOneDayCache" eternal="false" maxElementsInMemory="3000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="9000" memoryStoreEvictionPolicy="LRU"/>
+    
+    
+    
+    <cache name="tokenValidCache" eternal="false" maxElementsInMemory="30000"
+     overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+     timeToLiveSeconds="86400" memoryStoreEvictionPolicy="LRU"/>
+    
+    <!-- property缓存,缓存一天 -->
+    <cache name="propertyCache"
+     eternal="false"
+     maxElementsInMemory="3000"
+     overflowToDisk="false"
+     diskPersistent="false"
+     timeToIdleSeconds="0"
+     timeToLiveSeconds="9000"
+     memoryStoreEvictionPolicy="LRU"/>
+</ehcache>
+
+

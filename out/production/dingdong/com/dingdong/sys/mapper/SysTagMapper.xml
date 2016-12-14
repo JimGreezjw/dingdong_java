@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingdong.sys.mapper.SysTagMapper">
+
+	<resultMap type="systag" id="systagMap">
+		<id property="id" column="id" />
+		<result property="tagName" column="tag_name" />
+	</resultMap>
+	
+	<select id="findById" resultType="systag" resultMap="systagMap">
+		select * from sys_tags where id = #{id};
+	</select>
+	
+
+	<select id="findAllTags" resultType="systag" resultMap="systagMap">
+		select * from sys_tags;
+	</select>
+
+	<insert id="addTag">
+		insert into sys_tags(tag_name) values(#{sysTag.tagName});
+	</insert>
+
+	<delete id="deleteById">
+		delete from sys_tags where id = #{sysTag.id}
+	</delete>
+	
+</mapper>

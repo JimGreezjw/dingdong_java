@@ -1,0 +1,153 @@
+/* Empty. Add your own CSS if you like */
+.expander {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.expander>.title {
+    background-color: black;
+    color: white;
+    padding: .1em .3em;
+    cursor: pointer;
+}
+
+#navigation {
+    position: absolute;
+    min-width: 100%;
+    min-height: 34px;
+    font-size: 20px;
+    line-height: 32px;
+}
+
+
+#WxpayButtonStyle {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    position: absolute;
+    top: 70px;
+    right: 5px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 18px;
+    line-height: 32px;
+}
+
+#WxpayButtonStyle1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    position: absolute;
+    top: 25px;
+    right: 160px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 18px;
+    line-height: 32px;
+}
+
+.expander>.body {
+    padding: .1em .3em;
+}
+
+/*空白页显示文字*/
+.center{ MARGIN-RIGHT: auto;
+    MARGIN-LEFT: auto;
+    height:200px;
+    font-family:"黑体";
+    vertical-align:middle;
+    line-height:200px;
+    text-align:center;
+    font-size:larger;
+}
+
+.div{ width:100%;padding:10px;border:1px }
+.div_left{ float:left;width:33%;border:0px solid #00F;height:50px;text-align:center}
+.div_center{ width:33%;border:0px solid #00F;height:50px;text-align:center}
+.div_right{ float:right;width:33%;border:0px solid #00F;height:50px;text-align:center}
+.clear{ clear:both}
+
+.div_money{ float:left;width:50%;border:1px solid lightgrey; height:40px;background-color:#ffffff;text-align:center;}
+.div_score{ float:right;width:50%;border:1px solid lightgrey;height:40px;  background-color:#ffffff;text-align:center}
+
+p.ex1
+{
+    /*font-style font-variant font-weight font-size font-family。 */
+    font: normal bold 12px verdana;
+}
+
+p.ex2
+{
+    /*font-style font-variant font-weight font-size font-family。 */
+    font: normal bold 20px verdana;
+}
+
+p.ex3
+{
+    /*font-style font-variant font-weight font-size font-family。 */
+    font: normal  12px verdana;
+}
+
+table.tableStyle  {
+    border-collapse: separate;
+    border-spacing:5px;
+    padding: 10px;
+
+}
+
+tr.tableTrStyle  {
+    border: 1px solid lightgrey;
+    border-collapse: separate;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+td.tableTdStyle  {
+    border: 1px solid lightgrey;
+    border-collapse: separate ;
+    padding: 10px;
+    vertical-align:middle;
+}
+/*底部的红点消息显示*/
+.tab-red-point-patient:after{
+    position: absolute;
+    content: ' ';
+    height: 9px;
+    width: 9px;
+    border-radius: 6px;
+    background-color: red;
+    top: 7px;
+    right: 80%;
+}
+.slider-pager {
+    position: absolute;
+    bottom: 20px;
+    z-index: 1;
+    width: 100%;
+    height: 5px;
+    text-align: right;
+}
+
+.slider-pager .slider-pager-page {
+    display: inline-block;
+    margin: 0px 3px;
+    width: 10px;
+    color: rgba(115, 115, 115, 0.64);
+    text-decoration: none;
+    opacity: 0.1;
+}
+

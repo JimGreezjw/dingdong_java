@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+<head>
+<style>
+input{
+width:80%;
+height:50px;
+font-size:18px;
+}
+</style>
+<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>http测试</title>    
+
+	<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script></script>
+	<script type="text/javascript">
+		$(function(){
+
+
+			var url="https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+$("#access_token").val();
+			$("#send").click(function()
+			{
+
+			
+				alert($("#json").val());
+				$.ajax({
+				url : url,
+				cache : false,
+				type : 'POST',
+				data : $("#json").val(),
+				success : function(ret) {
+					$("#result").val(JSON.stringify(ret));
+	
+				},
+				fail : function(ret) {
+					$("#result").val(JSON.stringify(ret));
+	
+				}
+				});
+			
+			
+			});
+		
+			
+		});
+	</script>
+	<body>
+		口令
+		<br>		
+<input type="text" id="access_token" value="SLE3O8HwIAnFLA9r3dYs3tJlLfiJPfZLKRb4n8m-EIxADnpksaeEKuZ2uilnLdCLmFaDE8Ir_FghYEKcMWmHtqz3uWge7rp7Ykg61jImsRgMQJaABATXQ">
+		<br>
+		json
+				<br>
+		<input type="textArea"  id="json" rows=100 value=""  style="width:80%;height:500px"/>
+					<br>			
+		<td><input type="button"  id="send"  value="发送"  />
+				result
+				<br>
+		<input type="textArea" rows=100 wrap="physical" id="result" value=""  style="width:80%;height:200px"/>
+					<br>		
+
+
+	</body>

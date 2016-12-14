@@ -1,0 +1,29 @@
+<ion-view view-title="手机验证" >
+    <ion-nav-bar class="bar-calm">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content class="padding">
+
+    <div class="list">
+        <label class="item item-input">
+            <span class="input-label">手机号码：</span>
+            <input type="number" ng-model="ctrlScope.mobileNo"   ng-minlength="11"  ng-maxlength='11' placeholder="请输入手机号码" required >
+        </label>
+        <label class="item item-input" >
+            <span class="input-label"> </span>
+            <button ng-click="showConfirmeGetValid('获取验证码')"  class="button button-positive" >获取验证码</button>
+        </label>
+
+        <label class="item item-input">
+            <span class="input-label">验&nbsp;&nbsp;证&nbsp;&nbsp;码：</span>
+            <input type="text" ng-model="ctrlScope.msgCode"  placeholder="请输入验证码" required >
+        </label>
+        <label class="item item-input">
+            <span class="input-label"> </span>
+            <button ng-click="showConfirmePutValid('获取验证码')" class="button button-positive" >&nbsp;提&nbsp;交&nbsp;验&nbsp;证&nbsp;</button>
+        </label>
+    </div>
+
+</ion-content>
+</ion-view>

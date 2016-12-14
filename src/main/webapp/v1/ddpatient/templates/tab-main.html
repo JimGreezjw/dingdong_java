@@ -1,0 +1,63 @@
+<ion-view>
+    <ion-header-bar align-title="center" class="bar-calm">
+        <h1 class="title">叮咚门诊</h1>
+    </ion-header-bar>
+
+    <ion-content class="row-no-padding">
+
+        <div id="search-bar" ng-click="search()">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" style="height: 25px" id="search-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <a style="color: #9e9e9e">搜索医生、医院</a>
+                </label>
+            </div>
+        </div>
+
+        <ion-slide-box style="padding-top:8px;" on-slide-changed="slideHasChanged($index)" show-pager="true"
+                       auto-play="true" does-continue="true">
+            <ion-slide>
+                <img style="max-height:140px;width:100%"
+                     src="http://www.yushansoft.com/dingdong/images/guanggao/go4.jpg"/>
+            </ion-slide>
+            <ion-slide style=".slider-pager{text-align:right}">
+                <img style="max-height:140px;width:100%"
+                     src="http://www.yushansoft.com/dingdong/images/guanggao/go5.jpg"/>
+            </ion-slide>
+        </ion-slide-box>
+
+        <div class="div">
+            <div class="div_left" onclick="window.location.href= '#/doctorList';return false">
+                <img height="42" width="42"
+                     src="http://www.yushansoft.com/dingdong/images/sys/booking.png"/>
+                <p class="ex1">预约挂号</p>
+            </div>
+            <div class="div_left" onclick="window.location.href= '#/tab/userChat';return false">
+                <img height="42" width="42"
+                     src="http://www.yushansoft.com/dingdong/images/sys/doctor.png"/>
+                <p class="ex1">在线问诊</p>
+            </div>
+            <div class="div_right" onclick="window.location.href= '#/hospitalsAll';return false">
+                <img height="42" width="42"
+                     src="http://www.yushansoft.com/dingdong/images/sys/hospital.png"/>
+                <p class="ex1">合作医院</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <br/>
+        <div style="margin:15% 0 0 0;text-align:center;margin:0 auto;">
+            <p class="ex1">★新入驻医生★</p>
+        </div>
+        <br/>
+        <hscroller style="-webkit-transform: translateY(-50%);
+                          -ms-transform: translateY(-50%);
+                          transform: translateY(-50%); ">
+
+            <hcard ng-repeat="doctor in doctors" desc="{{doctor.name}}" level="-{{doctor.level}}"
+                   location="{{doctor.hospitalName?doctor.hospitalName:'...' }}" image="{{doctor.headImgUrl}}"
+                   href="#/doctors/{{doctor.id}}/doctorInforShow">
+            </hcard>
+        </hscroller>
+
+    </ion-content>
+</ion-view>

@@ -1,0 +1,50 @@
+{
+    "button": [
+        {
+            "type": "view", 
+            "name": "主页", 
+            "url": "http://www.yushansoft.com/ysproject/h5v1/main.htm?appId=wx5af408bd693d0918", 
+            "sub_button": [ ]
+        }, 
+        {
+            "name": "设置", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "个人信息", 
+                    "url": "http://www.yushansoft.com/ysproject/h5v1/basic/userInfo.htm?appId=wx5af408bd693d0918", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "创建公司", 
+                    "url": "http://www.yushansoft.com/ysproject/h5v1/wechat/newCompany.htm?appId=wx5af408bd693d0918", 
+                    "sub_button": [ ]
+                }
+            ]
+        }, 
+        {
+            "name": "发现", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "使用帮助", 
+                    "url": "http://www.yushansoft.com/ysproject/h5v1/help/index.htm", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "click", 
+                    "name": "反馈建议", 
+                    "key": "SUGGESTION", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "邀请好友", 
+                    "url": "http://www.yushansoft.com/ysproject/h5v1/wechat/invite.htm", 
+                    "sub_button": [ ]
+                }
+            ]
+        }
+    ]
+}

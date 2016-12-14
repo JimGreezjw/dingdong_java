@@ -1,0 +1,151 @@
+
+{
+    "button": [
+        {
+            "type": "view", 
+            "name": "叮咚门诊", 
+            "url": "http://www.yushansoft.com/dingdong/v1/ddpatient/index.html?appId=wxb031b2ffa1d3900a", 
+            "sub_button": [ ]
+        }, 
+        {
+            "name": "关于我们", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "公司简介", 
+                    "url": "http://www.yushansoft.com/dingdong/company/introduce.html", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "邀请好友", 
+                    "url": "http://www.yushansoft.com/dingdong/company/invite.html", 
+                    "sub_button": [ ]
+                },             
+                {
+                    "type": "view", 
+                    "name": "服务条款", 
+                    "url": "http://www.yushansoft.com/dingdong/v1/ddpatient/index.html#/user/terms", 
+                    "sub_button": [ ]
+                },  
+                {
+                    "type": "click", 
+                    "name": "反馈建议", 
+                    "key": "SUGGESTION", 
+                    "sub_button": [ ]
+                } 
+            ]
+        }
+    ],
+
+}
+
+
+
+
+
+
+{
+    "button": [
+        {
+            "type": "view", 
+            "name": "叮咚门诊", 
+            "url": "http://www.yushansoft.com/dingdong/v1/index.html?appId=wxb031b2ffa1d3900a", 
+            "sub_button": [ ]
+        }, 
+        {
+            "name": "关于我们", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "公司简介", 
+                    "url": "http://www.yushansoft.com/dingdong/company/introduce.html", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "邀请好友", 
+                    "url": "http://www.yushansoft.com/dingdong/company/invite.html", 
+                    "sub_button": [ ]
+                },             
+                {
+                    "type": "view", 
+                    "name": "服务条款", 
+                    "url": "http://www.yushansoft.com/dingdong/company/terms.html", 
+                    "sub_button": [ ]
+                },  
+                {
+                    "type": "view", 
+                    "name": "测试支付", 
+                    "url": "http://www.yushansoft.com/dingdong/sys/wxpay_test/test.htm", 
+                    "sub_button": [ ]
+                },   
+                {
+                    "type": "view", 
+                    "name": "正式支付", 
+                    "url": "http://www.yushansoft.com/dingdong/sys/wxpay/test.htm", 
+                    "sub_button": [ ]
+                },                       
+                {
+                    "type": "click", 
+                    "name": "反馈建议", 
+                    "key": "SUGGESTION", 
+                    "sub_button": [ ]
+                } 
+            ]
+        }
+    ],
+
+}
+
+
+
+
+
+
+
+
+
+
+{
+    "button": [
+        {
+            "type": "view", 
+            "name": "叮咚门诊", 
+            "url": "http://www.yushansoft.com/dingdong/v1/dddoctor/index.html?appId=wx5af408bd693d0918", 
+            "sub_button": [ ]
+        }, 
+        {
+            "name": "关于我们", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "公司简介", 
+                    "url": "http://www.yushansoft.com/dingdong/company/introduce.html", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "邀请好友", 
+                    "url": "http://www.yushansoft.com/dingdong/company/invite.html", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "view", 
+                    "name": "服务条款", 
+                    "url": "http://www.yushansoft.com/dingdong/company/terms.html", 
+                    "sub_button": [ ]
+                }, 
+                {
+                    "type": "click", 
+                    "name": "反馈建议", 
+                    "key": "SUGGESTION", 
+                    "sub_button": [ ]
+                }
+            ]
+        }
+    ], 
+    "matchrule": {
+        "group_id": "100"
+    }
+}
